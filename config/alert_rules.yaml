@@ -1,25 +1,30 @@
+# Ba alert symptom-based cho day13-l3a-monitoring-llmops-lab.
+# Tất cả đều đo triệu chứng người dùng thấy, không đo tên implementation nội bộ.
+# Runbook chi tiết từng alert: docs/alerts.md
 alerts:
-  - name: TODO_alert_1
-    severity: TODO
-    condition: TODO
-    duration: TODO
+  - name: high_p95_latency
+    severity: warning
+    condition: 'percentile(response_sent.latency_ms, 95) > 3000'
+    duration: 5m
     type: symptom-based
     channel: slack
-    owner: TODO
-    runbook: docs/alerts.md#alert-1
-  - name: TODO_alert_2
-    severity: TODO
-    condition: TODO
-    duration: TODO
+    owner: ta.viet.cuong (K4-L3A)
+    runbook: docs/alerts.md#alert-1-high_p95_latency
+
+  - name: error_rate_spike
+    severity: critical
+    condition: 'count(request_failed) / count(request_received) * 100 > 2'
+    duration: 3m
     type: symptom-based
     channel: slack
-    owner: TODO
-    runbook: docs/alerts.md#alert-2
-  - name: TODO_alert_3
-    severity: TODO
-    condition: TODO
-    duration: TODO
+    owner: ta.viet.cuong (K4-L3A)
+    runbook: docs/alerts.md#alert-2-error_rate_spike
+
+  - name: quality_degradation
+    severity: warning
+    condition: 'mean(response_sent.quality_score) < 0.75'
+    duration: 10m
     type: symptom-based
     channel: slack
-    owner: TODO
-    runbook: docs/alerts.md#alert-3
+    owner: ta.viet.cuong (K4-L3A)
+    runbook: docs/alerts.md#alert-3-quality_degradation

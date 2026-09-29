@@ -7,3 +7,6 @@ httpx==0.28.1
 langfuse==4.15.6
 PyYAML==6.0.3
 pytest==8.3.5
+streamlit==1.64.0
+plotly==7.1.0
+pandas==3.0.6

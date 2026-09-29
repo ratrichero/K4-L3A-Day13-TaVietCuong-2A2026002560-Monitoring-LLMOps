@@ -20,12 +20,23 @@ class RecordingLangfuseClient:
     def __init__(self) -> None:
         self.prompt = ManagedPrompt()
         self.span_updates: list[dict] = []
+        self.observations: list[dict] = []
 
     def get_prompt(self, name: str, **kwargs):
         return self.prompt
 
     def update_current_span(self, **kwargs) -> None:
         self.span_updates.append(kwargs)
+
+    @contextmanager
+    def start_as_current_observation(self, **kwargs):
+        self.observations.append(kwargs)
+
+        class _Obs:
+            def update(self, *a, **k) -> None:
+                pass
+
+        yield _Obs()
 
 
 def test_agent_records_prompt_version_with_v4_observation_api(monkeypatch) -> None:

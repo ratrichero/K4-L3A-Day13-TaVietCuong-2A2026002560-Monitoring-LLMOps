@@ -1,4 +1,7 @@
 service: day13-l3a-monitoring-llmops-lab
+
+# SLO chính — symptom-based: đo trải nghiệm người dùng (request thành công và nhanh),
+# không đo implementation nội bộ (không dùng tên span/tool).
 primary_slo:
   name: fast_successful_requests
   window: 28d
@@ -7,7 +10,24 @@ primary_slo:
     total_event: 'event == "request_received"'
   target_percent: 99.5
   error_budget_percent: 0.5
-  note: Học viên phải giải thích hoặc điều chỉnh ngưỡng bằng baseline của mình.
+  # Cách tính error budget trên window 28d:
+  #   budget = (1 - 99.5/100) * tổng request hợp lệ trong 28d
+  #   = 0.5% * N. Ví dụ với 10.000 request/28d: budget = 50 request được phép
+  #   chậm hơn 3000ms hoặc fail. Càng nhiều traffic, budget càng lớn theo tuyệt đối
+  #   nhưng tỷ lệ 0.5% không đổi.
+  error_budget_example: |
+    Với N request trong window 28d, được phép tối đa 0.005 * N bad events.
+    Burn rate = bad_events / (0.005 * N); burn rate > 1 nghĩa là đang tiêu
+    budget nhanh hơn kế hoạch và cần xem xét freeze deploy/mitigation.
+  note: >
+    Ngưỡng 3000ms giữ nguyên so với đề bài vì phù hợp baseline thực đo: P50 ≈ 426ms,
+    P95 ≈ 500-1100ms (tùy cold-start), P99 ≈ 1359ms — đường 3000ms nằm trên P99 nên
+    chỉ bắt các sự cố thật (rag_slow +2.5s đẩy P99 vượt ngưỡng) chứ không report
+    false-positive ở traffic thường.
+
+# Guardrails bổ trợ — ngưỡng cảnh báo từng metric, không phải SLO chính.
+# Giá trị lấy từ baseline thực đo trên data/logs.jsonl (52 request):
+#   quality avg 0.879, retrieval success 100%, cost ~0.002 USD/request.
 guardrails:
   error_rate_pct_max: 2
   daily_cost_usd_max: 2.5

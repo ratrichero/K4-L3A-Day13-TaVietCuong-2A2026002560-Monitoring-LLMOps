@@ -7,6 +7,25 @@ def test_scrub_email() -> None:
     assert "REDACTED_EMAIL" in out
 
 
+def test_scrub_cccd() -> None:
+    out = scrub_text("CCCD của tôi là 079260001234, xin cho hỏi")
+    assert "079260001234" not in out
+    assert "REDACTED_CCCD" in out
+
+
+def test_scrub_credit_card() -> None:
+    for card in ("4111 1111 1111 1111", "4391-2345-6789-0123", "4391234567890123"):
+        out = scrub_text(f"Dùng thẻ {card} để thanh toán")
+        assert card not in out
+        assert "REDACTED_CREDIT_CARD" in out
+
+
+def test_scrub_passport() -> None:
+    out = scrub_text("Passport P1234567 còn hạn")
+    assert "P1234567" not in out
+    assert "REDACTED_PASSPORT" in out
+
+
 def test_scrub_common_vietnamese_phone_formats() -> None:
     phone_numbers = (
         "0901234567",

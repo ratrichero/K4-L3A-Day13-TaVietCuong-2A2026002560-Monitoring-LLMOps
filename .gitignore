@@ -9,3 +9,7 @@ data/audit.jsonl
 config/challenge.json
 .pytest_cache/
 .antigravity/
+.freebuff/
+
+# baseline log chua scrub PII (giu local chi, khong commit)
+data/logs.baseline.jsonl
