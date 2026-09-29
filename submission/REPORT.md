@@ -8,7 +8,7 @@
 - **MSSV:** 2A2026002560
 - **Lớp:** K4-L3A
 - **Repository URL:** https://github.com/ratrichero/K4-L3A-Day13-TaVietCuong-2A2026002560-Monitoring-LLMOps
-- **Commit SHA cuối:** _(điền SHA của commit cuối sau khi push; nộp cùng URL trên LMS/Codelabs)_
+- **Commit SHA cuối:** `2a290f618d30002179f6e7ceb8d3eff9951446c8` (commit chứa đầy đủ kết quả + evidence; dòng này được ghi nhận trong commit kế tiếp trên `main`)
 - **Challenge ID:** `day13-k4-l3a-monitoring-llmops-v1` (seed 1311, incident `rag_slow`)
 - **Tên project Langfuse cá nhân:** `day13-k4-l3a-2A2026002560`
 
